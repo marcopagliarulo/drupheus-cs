@@ -20,9 +20,13 @@ and Rector need Drupal core to analyze against.
 ```shell
 composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
 composer config allow-plugins.phpstan/extension-installer true
-composer require --dev drupheus/drupheus-cs
+composer require --dev 'drupheus/drupheus-cs:^1.0@alpha'
 vendor/bin/drupheus-cs init web/modules/contrib/my_module
 ```
+
+The package is in alpha: `@alpha` allows it without lowering the project's
+`minimum-stability`. Rule names and parameters may still change before 1.0.0.
+See [CHANGELOG.md](CHANGELOG.md).
 
 `init` writes `phpcs.xml.dist`, `phpstan.neon.dist` and `rector.php` to the
 current directory. They are ordinary configuration files, so editors and CI
@@ -31,7 +35,7 @@ can use them directly.
 ESLint, Stylelint and CSpell use the Node packages that ship with Drupal core. Install them once; until then those three checks are skipped with a message:
 
 ```shell
-cd web/core && npx corepack yarn install
+cd web/core && yarn install
 ```
 
 ## Commands
@@ -60,7 +64,7 @@ already run PHPCS and PHPStan with your module's own configuration, so the
 package only has to be installed and selected. CI can only install a published
 package.
 
-1. Add `"drupheus/drupheus-cs": "^1.0"` to `require-dev` in the module's
+1. Add `"drupheus/drupheus-cs": "^1.0@alpha"` to `require-dev` in the module's
    `composer.json`. It is ignored when others install your module.
 2. In `phpcs.xml.dist`, replace the `Drupal` and `DrupalPractice` rules with
    `<rule ref="DrupheusCs"/>`, and add

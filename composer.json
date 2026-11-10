@@ -4,6 +4,11 @@
     "type": "phpcodesniffer-standard",
     "license": "GPL-2.0-or-later",
     "keywords": ["drupal", "coding standards", "phpcs", "phpstan", "rector", "dev"],
+    "homepage": "https://github.com/marcopagliarulo/drupheus-cs",
+    "support": {
+        "issues": "https://github.com/marcopagliarulo/drupheus-cs/issues",
+        "source": "https://github.com/marcopagliarulo/drupheus-cs"
+    },
     "require": {
         "php": ">=8.3",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
