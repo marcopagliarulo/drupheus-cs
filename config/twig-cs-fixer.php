@@ -5,13 +5,13 @@
  * Twig-CS-Fixer configuration: core's rules plus the template docblock rule.
  *
  * Core ships its configuration from Drupal 11.5. Older versions use a copy of
- * it. DRUPAL_CS_CORE_DIR points to the core directory.
+ * it. DRUPHEUS_CS_CORE_DIR points to the core directory.
  */
 
 declare(strict_types=1);
 
 use Drupal\Core\Template\TwigTransTokenParser;
-use DrupalCS\TwigCsFixer\TemplateDocBlockRule;
+use DrupheusCs\TwigCsFixer\TemplateDocBlockRule;
 use TwigCsFixer\Config\Config;
 use TwigCsFixer\File\Finder;
 use TwigCsFixer\Rules\Literal\CompactHashRule;
@@ -19,7 +19,7 @@ use TwigCsFixer\Rules\Whitespace\IndentRule;
 use TwigCsFixer\Ruleset\Ruleset;
 use TwigCsFixer\Standard\TwigCsFixer;
 
-$core = getenv('DRUPAL_CS_CORE_DIR');
+$core = getenv('DRUPHEUS_CS_CORE_DIR');
 if (is_string($core) && is_file($core . '/.twig-cs-fixer.php')) {
   $config = require $core . '/.twig-cs-fixer.php';
 }

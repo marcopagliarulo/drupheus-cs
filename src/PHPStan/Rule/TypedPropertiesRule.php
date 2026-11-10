@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\PHPStan\Rule;
+namespace DrupheusCs\PHPStan\Rule;
 
 use PhpParser\Node;
 use PHPStan\Analyser\Scope;
@@ -41,7 +41,7 @@ final class TypedPropertiesRule implements Rule {
 
     return [
       RuleErrorBuilder::message(sprintf('Property %s::$%s has no native type.', $class->getName(), $name))
-        ->identifier('drupalCs.types.missingProperty')
+        ->identifier('drupheusCs.types.missingProperty')
         ->line($node->getStartLine())
         ->build(),
     ];

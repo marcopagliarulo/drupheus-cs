@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\PHPStan\Rule;
+namespace DrupheusCs\PHPStan\Rule;
 
-use DrupalCS\PHPStan\Drupal\ConstructorAutowireAnalyzer;
-use DrupalCS\PHPStan\Drupal\CoreVersion;
-use DrupalCS\PHPStan\Drupal\Feature;
+use DrupheusCs\PHPStan\Drupal\ConstructorAutowireAnalyzer;
+use DrupheusCs\PHPStan\Drupal\CoreVersion;
+use DrupheusCs\PHPStan\Drupal\Feature;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
@@ -201,7 +201,7 @@ final class FactoryAutowireRule implements Rule {
 
     return [
       RuleErrorBuilder::message($message . '.')
-        ->identifier('drupalCs.autowire.available')
+        ->identifier('drupheusCs.autowire.available')
         ->line($statement->getStartLine())
         ->build(),
     ];
@@ -226,7 +226,7 @@ final class FactoryAutowireRule implements Rule {
 
     return array_map(
       static fn(string $problem): IdentifierRuleError => RuleErrorBuilder::message(sprintf('%s cannot be autowired: %s.', $class->getName(), $problem))
-        ->identifier('drupalCs.autowire.unresolvable')
+        ->identifier('drupheusCs.autowire.unresolvable')
         ->line($constructor->getStartLine())
         ->build(),
       $this->analyzer->problems($params, FALSE),
@@ -324,7 +324,7 @@ final class FactoryAutowireRule implements Rule {
     }
     return [
       RuleErrorBuilder::message(sprintf('%s cannot use autowiring: %s.', $class->getName(), $reason))
-        ->identifier('drupalCs.autowire.unavailable')
+        ->identifier('drupheusCs.autowire.unavailable')
         ->line($statement->getStartLine())
         ->build(),
     ];

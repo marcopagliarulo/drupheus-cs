@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\PHPStan\Rule;
+namespace DrupheusCs\PHPStan\Rule;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\Assign;
@@ -69,7 +69,7 @@ final class ConstructorPromotionRule implements Rule {
       }
 
       $errors[] = RuleErrorBuilder::message(sprintf('Property %s::$%s can be promoted to the constructor.', $node->getClassReflection()->getName(), $assignment['property']))
-        ->identifier('drupalCs.constructorPromotion.available')
+        ->identifier('drupheusCs.constructorPromotion.available')
         ->line($property->getStartLine())
         ->build();
     }

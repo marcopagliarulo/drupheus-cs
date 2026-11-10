@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ruleset name="DrupalCS" namespace="DrupalCS">
+<ruleset name="DrupheusCs" namespace="DrupheusCs">
   <description>Drupal coding standards for Drupal 11+ contrib development.</description>
 
   <arg name="extensions" value="php,module,inc,install,test,profile,theme,info,txt,md,yml"/>
@@ -13,14 +13,14 @@
   <rule ref="DrupalPractice"/>
 
   <!-- Baseline: rules from the coding standards Coder does not enforce. -->
-  <rule ref="DrupalCS.Operators.NotEqualOperator"/>
-  <rule ref="DrupalCS.NamingConventions.VariableCaseConsistency"/>
-  <rule ref="DrupalCS.ControlStructures.AlternativeSyntax"/>
-  <rule ref="DrupalCS.Commenting.ObjectType"/>
-  <rule ref="DrupalCS.Namespaces.UnnecessaryAlias"/>
-  <rule ref="DrupalCS.Files.ProjectFileNames"/>
-  <rule ref="DrupalCS.Config.ConfigSchema"/>
-  <rule ref="DrupalCS.Classes.ConstantModifierOrder"/>
+  <rule ref="DrupheusCs.Operators.NotEqualOperator"/>
+  <rule ref="DrupheusCs.NamingConventions.VariableCaseConsistency"/>
+  <rule ref="DrupheusCs.ControlStructures.AlternativeSyntax"/>
+  <rule ref="DrupheusCs.Commenting.ObjectType"/>
+  <rule ref="DrupheusCs.Namespaces.UnnecessaryAlias"/>
+  <rule ref="DrupheusCs.Files.ProjectFileNames"/>
+  <rule ref="DrupheusCs.Config.ConfigSchema"/>
+  <rule ref="DrupheusCs.Classes.ConstantModifierOrder"/>
   <rule ref="Squiz.Strings.DoubleQuoteUsage">
     <!-- Drupal allows "Foo $bar" for simple variables. -->
     <exclude name="Squiz.Strings.DoubleQuoteUsage.ContainsVar"/>
@@ -43,7 +43,7 @@
 
   <!--
     Extra enabled by default. Disable it from a project's phpcs.xml.dist with
-    <exclude name="..."/> inside its <rule ref="DrupalCS"> element. Every other
+    <exclude name="..."/> inside its <rule ref="DrupheusCs"> element. Every other
     extra is a PHPStan rule, toggled in phpstan.neon.dist.
   -->
 

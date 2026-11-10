@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\Sniffs\Commenting;
+namespace DrupheusCs\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;

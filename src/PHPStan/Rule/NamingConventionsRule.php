@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\PHPStan\Rule;
+namespace DrupheusCs\PHPStan\Rule;
 
 use PhpParser\Node;
 use PHPStan\Analyser\Scope;
@@ -72,7 +72,7 @@ final class NamingConventionsRule implements Rule {
    * Builds a naming error.
    */
   private function error(string $message, string $id, int $line): IdentifierRuleError {
-    return RuleErrorBuilder::message($message)->identifier('drupalCs.naming.' . $id)->line($line)->build();
+    return RuleErrorBuilder::message($message)->identifier('drupheusCs.naming.' . $id)->line($line)->build();
   }
 
 }

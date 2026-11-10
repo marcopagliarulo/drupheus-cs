@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\PHPStan\Rule;
+namespace DrupheusCs\PHPStan\Rule;
 
-use DrupalCS\PHPStan\Drupal\CoreVersion;
-use DrupalCS\PHPStan\Drupal\Feature;
+use DrupheusCs\PHPStan\Drupal\CoreVersion;
+use DrupheusCs\PHPStan\Drupal\Feature;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Function_;
 use PHPStan\Analyser\Scope;
@@ -65,10 +65,10 @@ final class ProceduralHooksRule implements Rule {
     $function = $node->name->toString();
 
     if ($this->hasAttribute($node, self::LEGACY_HOOK) && $this->coreVersion->supports($file, Feature::CLASS_HOOKS)) {
-      return [$this->error($function . '() is a #[LegacyHook] shim, but this code no longer supports a core without class hooks: delete it.', 'drupalCs.classHooks.legacyShim', $node)];
+      return [$this->error($function . '() is a #[LegacyHook] shim, but this code no longer supports a core without class hooks: delete it.', 'drupheusCs.classHooks.legacyShim', $node)];
     }
     if ($this->hasAttribute($node, self::LEGACY_REQUIREMENTS_HOOK) && $this->coreVersion->supports($file, Feature::REQUIREMENTS_HOOKS)) {
-      return [$this->error($function . '() is a #[LegacyRequirementsHook] shim, but this code no longer supports a core without the replacement hooks: delete it.', 'drupalCs.classHooks.legacyShim', $node)];
+      return [$this->error($function . '() is a #[LegacyRequirementsHook] shim, but this code no longer supports a core without the replacement hooks: delete it.', 'drupheusCs.classHooks.legacyShim', $node)];
     }
 
     $hook = $this->implementedHook($node);
@@ -80,13 +80,13 @@ final class ProceduralHooksRule implements Rule {
       if (!$this->coreVersion->supports($file, Feature::REQUIREMENTS_HOOKS)) {
         return [];
       }
-      return [$this->error($function . '() implements hook_requirements(): use #[Hook(\'runtime_requirements\')], #[Hook(\'update_requirements\')] and an InstallRequirementsInterface class.', 'drupalCs.classHooks.requirements', $node)];
+      return [$this->error($function . '() implements hook_requirements(): use #[Hook(\'runtime_requirements\')], #[Hook(\'update_requirements\')] and an InstallRequirementsInterface class.', 'drupheusCs.classHooks.requirements', $node)];
     }
 
     if (!$this->canUseClass($hook, $file)) {
       return [];
     }
-    return [$this->error(sprintf("%s() implements hook_%s(): move it to a class in src/Hook using #[Hook('%s')].", $function, $hook, $hook), 'drupalCs.classHooks.procedural', $node)];
+    return [$this->error(sprintf("%s() implements hook_%s(): move it to a class in src/Hook using #[Hook('%s')].", $function, $hook, $hook), 'drupheusCs.classHooks.procedural', $node)];
   }
 
   /**

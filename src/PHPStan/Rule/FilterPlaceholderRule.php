@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\PHPStan\Rule;
+namespace DrupheusCs\PHPStan\Rule;
 
-use DrupalCS\PHPStan\Drupal\ExtensionLocator;
+use DrupheusCs\PHPStan\Drupal\ExtensionLocator;
 use PhpParser\Node;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
@@ -61,7 +61,7 @@ final class FilterPlaceholderRule implements Rule {
       }
       $message = 'Placeholder [%1$s%2$s] must be prefixed with the module name and a hyphen or underscore, such as [%1$s%3$s-%2$s].';
       $errors[] = RuleErrorBuilder::message(sprintf($message, $closing, $name, $module))
-        ->identifier('drupalCs.naming.placeholder')
+        ->identifier('drupheusCs.naming.placeholder')
         ->build();
     }
     return $errors;

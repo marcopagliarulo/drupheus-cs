@@ -1,4 +1,4 @@
-# Drupal CS
+# Drupheus CS
 
 Drupal coding standards, deprecation checks and modernization rules for
 Drupal 11+ contrib development. It builds on PHP_CodeSniffer with
@@ -9,6 +9,9 @@ Drupal 11+ contrib development. It builds on PHP_CodeSniffer with
 Drupal 10 is not supported. See [Coding standards coverage](#coding-standards-coverage)
 for how each rule of the Drupal coding standards is enforced.
 
+Drupheus CS is an independent project, not affiliated with or endorsed by the
+Drupal Association. Drupal is a registered trademark of Dries Buytaert.
+
 ## Install
 
 Install it in a Drupal 11 project that contains your module, because PHPStan
@@ -17,8 +20,8 @@ and Rector need Drupal core to analyze against.
 ```shell
 composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
 composer config allow-plugins.phpstan/extension-installer true
-composer require --dev marcopagliarulo/drupal-cs
-vendor/bin/drupal-cs init web/modules/contrib/my_module
+composer require --dev drupheus/drupheus-cs
+vendor/bin/drupheus-cs init web/modules/contrib/my_module
 ```
 
 `init` writes `phpcs.xml.dist`, `phpstan.neon.dist` and `rector.php` to the
@@ -35,11 +38,11 @@ cd web/core && npx corepack yarn install
 
 | Command | Purpose |
 | --- | --- |
-| `drupal-cs check [tool...]` | Run all checks, or only the named ones: `phpcs`, `phpstan`, `rector`, `twig`, `eslint`, `stylelint`, `cspell` |
-| `drupal-cs fix` | Apply Rector deprecation fixes, then `phpcbf`, Twig-CS-Fixer, ESLint and Stylelint fixes |
-| `drupal-cs autowire` | List what can be autowired, what will fail, and what cannot, with reasons |
-| `drupal-cs convert-hooks <path>` | Convert procedural hooks to class hooks |
-| `drupal-cs promote <path>` | Convert constructor assignments to promoted properties |
+| `drupheus-cs check [tool...]` | Run all checks, or only the named ones: `phpcs`, `phpstan`, `rector`, `twig`, `eslint`, `stylelint`, `cspell` |
+| `drupheus-cs fix` | Apply Rector deprecation fixes, then `phpcbf`, Twig-CS-Fixer, ESLint and Stylelint fixes |
+| `drupheus-cs autowire` | List what can be autowired, what will fail, and what cannot, with reasons |
+| `drupheus-cs convert-hooks <path>` | Convert procedural hooks to class hooks |
+| `drupheus-cs promote <path>` | Convert constructor assignments to promoted properties |
 
 Run `convert-hooks` and `promote` after `fix`, and review the result.
 
@@ -57,10 +60,10 @@ already run PHPCS and PHPStan with your module's own configuration, so the
 package only has to be installed and selected. CI can only install a published
 package.
 
-1. Add `"marcopagliarulo/drupal-cs": "^1.0"` to `require-dev` in the module's
+1. Add `"drupheus/drupheus-cs": "^1.0"` to `require-dev` in the module's
    `composer.json`. It is ignored when others install your module.
 2. In `phpcs.xml.dist`, replace the `Drupal` and `DrupalPractice` rules with
-   `<rule ref="DrupalCS"/>`, and add
+   `<rule ref="DrupheusCs"/>`, and add
    `<config name="ignore_warnings_on_exit" value="1"/>`.
 3. Keep your own `phpstan.neon.dist`. The rules load automatically.
 4. Add a Rector job to `.gitlab-ci.yml`, because the templates do not have one:
@@ -72,8 +75,8 @@ rector:
   allow_failure: true
   script:
     - cd $CI_PROJECT_DIR
-    - vendor/bin/drupal-cs init $DRUPAL_PROJECT_FOLDER
-    - vendor/bin/drupal-cs check rector
+    - vendor/bin/drupheus-cs init $DRUPAL_PROJECT_FOLDER
+    - vendor/bin/drupheus-cs check rector
 ```
 
 The templates already run Twig-CS-Fixer (Drupal 11.5 and later), ESLint, Stylelint and CSpell, so those need no setup.
@@ -101,7 +104,7 @@ Every section of the [Drupal coding standards](https://project.pages.drupalcode.
 | Control structures always use braces | Yes | `Drupal.ControlStructures.InlineControlStructure` |
 | `elseif`, not `else if` | Yes | `Drupal.ControlStructures.ElseIf` |
 | Keyword spacing and brace placement | Yes | `Drupal.ControlStructures.ControlSignature` |
-| Alternate `:` syntax only in templates | Yes | `DrupalCS.ControlStructures.AlternativeSyntax` (allowed in `.tpl.php` files) |
+| Alternate `:` syntax only in templates | Yes | `DrupheusCs.ControlStructures.AlternativeSyntax` (allowed in `.tpl.php` files) |
 | One class, interface or trait per file | Yes | `Generic.Files.OneObjectStructurePerFile` |
 | File named after its class | Yes | `Drupal.Classes.ClassFileName` |
 | Classes in `.module` files only when safe | Manual | |
@@ -117,7 +120,7 @@ Every section of the [Drupal coding standards](https://project.pages.drupalcode.
 | Lines at most 80 characters | Partial | `Drupal.Files.LineLength` checks comments only |
 | Conditions are not wrapped or over-compacted | Manual | |
 | Functions lowercase with a module prefix | Yes | `Drupal.NamingConventions.ValidFunctionName` |
-| Variables do not mix camelCase and snake_case in a file | Partial | `DrupalCS.NamingConventions.VariableCaseConsistency` (warning, ignores parameters) |
+| Variables do not mix camelCase and snake_case in a file | Partial | `DrupheusCs.NamingConventions.VariableCaseConsistency` (warning, ignores parameters) |
 | Persistent variables are lowercase and prefixed | Yes | `StateKeyRule` (PHPStan), applied to State API keys, which replaced `variable_set()`; literal keys only |
 | Constants uppercase | Yes | `Generic.NamingConventions.UpperCaseConstantName` |
 | `TRUE`, `FALSE`, `NULL` uppercase | Yes | `Generic.PHP.UpperCaseConstant` |
@@ -132,9 +135,9 @@ Every section of the [Drupal coding standards](https://project.pages.drupalcode.
 | No underscore prefix on protected or private members | Yes | `Drupal.NamingConventions.ValidVariableName`, `Drupal.NamingConventions.ValidFunctionName` |
 | Class names stand alone | Manual | |
 | Enums follow class naming, UpperCamel cases | Yes | `Drupal.NamingConventions.ValidEnumCase` |
-| Documentation files named `README.md` style | Yes | `DrupalCS.Files.ProjectFileNames` (files at the extension root) |
+| Documentation files named `README.md` style | Yes | `DrupheusCs.Files.ProjectFileNames` (files at the extension root) |
 | Spaces around binary operators, none around unary | Yes | `Squiz.WhiteSpace.OperatorSpacing`, `Drupal.Formatting.SpaceUnaryOperator` |
-| `!=`, never `<>` | Yes | `DrupalCS.Operators.NotEqualOperator` |
+| `!=`, never `<>` | Yes | `DrupheusCs.Operators.NotEqualOperator` |
 | `?:` when the first operand matches the condition | Yes | `SlevomatCodingStandard.ControlStructures.RequireShortTernaryOperator` |
 | `??` instead of an `isset()` ternary | Yes | `SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator` |
 | New code has parameter and return type hints | Yes | `NativeTypeHintsRule` (PHPStan) |
@@ -151,7 +154,7 @@ Every section of the [Drupal coding standards](https://project.pages.drupalcode.
 | Provide interfaces for classes meant to be extended | Manual | |
 | Visibility declared on methods and properties | Yes | `Drupal.Scope.MethodScope`, `Drupal.Classes.PropertyDeclaration` |
 | Public properties discouraged | Yes | `SlevomatCodingStandard.Classes.ForbiddenPublicProperty` (warning, allows `readonly`) |
-| Modifier order | Yes | `PSR2.Methods.MethodDeclaration` (`Drupal.Methods.MethodDeclaration` in Coder 8.3), `PSR2.Classes.PropertyDeclaration`, `DrupalCS.Classes.ConstantModifierOrder` |
+| Modifier order | Yes | `PSR2.Methods.MethodDeclaration` (`Drupal.Methods.MethodDeclaration` in Coder 8.3), `PSR2.Classes.PropertyDeclaration`, `DrupheusCs.Classes.ConstantModifierOrder` |
 
 ### API documentation and comments
 
@@ -169,7 +172,7 @@ Every section of the [Drupal coding standards](https://project.pages.drupalcode.
 | `{@inheritdoc}` form | Yes | `Drupal.Commenting.DocComment` |
 | Fully-qualified class names after tags | Yes | `Drupal.Commenting.DataTypeNamespace` |
 | Type spelling: `bool`, `int`, `array`, `null` | Yes | `Drupal.Commenting.FunctionComment` |
-| `object` rather than `stdClass` in docblocks | Yes | `DrupalCS.Commenting.ObjectType` (fixable) |
+| `object` rather than `stdClass` in docblocks | Yes | `DrupheusCs.Commenting.ObjectType` (fixable) |
 | `@param` present with a description | Yes | `Drupal.Commenting.FunctionComment` |
 | `@return` present when returning, absent when not | Yes | `Drupal.Commenting.FunctionComment` |
 | Tag description indented two spaces | Yes | `Drupal.Commenting.FunctionComment` |
@@ -193,7 +196,7 @@ Every section of the [Drupal coding standards](https://project.pages.drupalcode.
 | Namespaces: global classes fully qualified, not imported | Yes | `Drupal.Classes.UseGlobalClass` |
 | Namespaces: no leading `\` in `use` | Yes | `Drupal.Classes.UseLeadingBackslash` |
 | Namespaces: one class per `use` | Yes | `PSR2.Namespaces.UseDeclaration`, including group `use` |
-| Namespaces: alias only to avoid collisions | Yes | `DrupalCS.Namespaces.UnnecessaryAlias` |
+| Namespaces: alias only to avoid collisions | Yes | `DrupheusCs.Namespaces.UnnecessaryAlias` |
 | Exceptions end in `Exception` | Yes | `NamingConventionsRule` (PHPStan) |
 | Exception messages not translated | Yes | `DrupalPractice.General.ExceptionT` |
 | Exception naming, subclasses and message content | Manual | |
@@ -220,8 +223,8 @@ Every section of the [Drupal coding standards](https://project.pages.drupalcode.
 | SQL: reserved words, capitalization, naming, `SELECT *` | Manual | |
 | Markup | Manual | Standards not yet available |
 | YAML: syntax, two-space indent | Yes | ESLint with core's configuration |
-| YAML: configuration file names | Yes | `DrupalCS.Files.ProjectFileNames` (simple configuration in `config/install` and `config/optional`) |
-| Composer package names | Yes | `DrupalCS.Files.ProjectFileNames` (`composer.json` next to the info file is `drupal/<machine name>`) |
+| YAML: configuration file names | Yes | `DrupheusCs.Files.ProjectFileNames` (simple configuration in `config/install` and `config/optional`) |
+| Composer package names | Yes | `DrupheusCs.Files.ProjectFileNames` (`composer.json` next to the info file is `drupal/<machine name>`) |
 
 ## Extras
 
@@ -243,7 +246,7 @@ Disable PHPStan extras in `phpstan.neon.dist`:
 
 ```neon
 parameters:
-	drupalCs:
+	drupheusCs:
 		extras:
 			autowire: false
 ```
@@ -251,7 +254,7 @@ parameters:
 Disable strict types in `phpcs.xml.dist`:
 
 ```xml
-<rule ref="DrupalCS">
+<rule ref="DrupheusCs">
   <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing"/>
 </rule>
 ```
@@ -260,7 +263,7 @@ To enforce `snake_case` instead of `lowerCamelCase`:
 
 ```neon
 parameters:
-	drupalCs:
+	drupheusCs:
 		variableCase:
 			style: snake_case
 ```
@@ -269,26 +272,26 @@ Parameters named by a parent method or a hook, such as `$form_state`, are exempt
 Under `snake_case`, promoted constructor parameters are exempt too, because they
 are also properties.
 
-The `drupalCs.standard` parameters `nativeTypeHints` and `namingConventions`
+The `drupheusCs.standard` parameters `nativeTypeHints` and `namingConventions`
 turn off the PHPStan rules for the standards themselves. Adding native types to
 existing public methods is a BC break, so a released module may want to do that
 or use a PHPStan baseline. `namingConventions` also covers State API keys,
 request attributes, filter placeholders and PSR-4 locations, and
 `nativeTypeHints` covers nullable return types. To skip only one of those,
-ignore its identifier: `drupalCs.naming.stateKey`,
-`drupalCs.naming.requestAttribute`, `drupalCs.naming.placeholder`,
-`drupalCs.naming.psr4` or `drupalCs.types.nullable`.
+ignore its identifier: `drupheusCs.naming.stateKey`,
+`drupheusCs.naming.requestAttribute`, `drupheusCs.naming.placeholder`,
+`drupheusCs.naming.psr4` or `drupheusCs.types.nullable`.
 
 A single PHPCS check can be turned off the same way as strict types, for
-example `<exclude name="DrupalCS.Files.ProjectFileNames.ComposerPackageName"/>`
+example `<exclude name="DrupheusCs.Files.ProjectFileNames.ComposerPackageName"/>`
 when the drupal.org project name differs from the module's machine name, or
-`<exclude name="DrupalCS.Config.ConfigSchema"/>` to stop requiring a schema.
+`<exclude name="DrupheusCs.Config.ConfigSchema"/>` to stop requiring a schema.
 
 ## Minimum core version
 
 A recommendation is only made when the code can use it on every core it
 supports. The lowest supported core is read from `core_version_requirement` in
-the nearest `.info.yml`. Set `drupalCs.minimumCoreVersion` to override it.
+the nearest `.info.yml`. Set `drupheusCs.minimumCoreVersion` to override it.
 
 | Feature | Needs core |
 | --- | --- |
@@ -305,9 +308,9 @@ modules your code depends on must be installed in that site.
 
 ```shell
 composer install
-DRUPAL_CS_SITE=/path/to/drupal/project vendor/bin/phpunit
+DRUPHEUS_CS_SITE=/path/to/drupal/project vendor/bin/phpunit
 ```
 
-Without `DRUPAL_CS_SITE`, the integration tests are skipped. The project must
+Without `DRUPHEUS_CS_SITE`, the integration tests are skipped. The project must
 have this package installed, and the fixture modules are copied into its
 `web/modules/custom` directory.

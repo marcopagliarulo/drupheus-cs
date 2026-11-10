@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\PHPStan\Rule;
+namespace DrupheusCs\PHPStan\Rule;
 
 use PhpParser\Node;
 use PHPStan\Analyser\Scope;
@@ -40,7 +40,7 @@ final class PluginAttributesRule implements Rule {
 
     return [
       RuleErrorBuilder::message(sprintf('Plugin %s uses the @%s annotation: use the #[%s] attribute instead.', $class->getName(), $matches[1], $matches[1]))
-        ->identifier('drupalCs.pluginAttributes.annotation')
+        ->identifier('drupheusCs.pluginAttributes.annotation')
         ->line($node->getOriginalNode()->getStartLine())
         ->build(),
     ];

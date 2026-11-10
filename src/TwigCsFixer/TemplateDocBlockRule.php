@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\TwigCsFixer;
+namespace DrupheusCs\TwigCsFixer;
 
 use TwigCsFixer\Rules\AbstractRule;
 use TwigCsFixer\Token\Token;

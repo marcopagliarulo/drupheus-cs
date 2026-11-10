@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\PHPStan\Rule;
+namespace DrupheusCs\PHPStan\Rule;
 
-use DrupalCS\PHPStan\Drupal\ExtensionLocator;
+use DrupheusCs\PHPStan\Drupal\ExtensionLocator;
 use PhpParser\Node;
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\InClassNode;
@@ -62,7 +62,7 @@ final class Psr4LocationRule implements Rule {
         $relative = substr($expected, strlen($extension['dir']) + 1);
         return [
           RuleErrorBuilder::message(sprintf('%s must be in %s/%s to follow PSR-4.', $name, $extension['name'], $relative))
-            ->identifier('drupalCs.naming.psr4')
+            ->identifier('drupheusCs.naming.psr4')
             ->line($node->getOriginalNode()->getStartLine())
             ->build(),
         ];

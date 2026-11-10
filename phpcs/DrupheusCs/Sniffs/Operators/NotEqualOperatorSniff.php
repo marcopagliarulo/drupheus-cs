@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\Sniffs\Operators;
+namespace DrupheusCs\Sniffs\Operators;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;

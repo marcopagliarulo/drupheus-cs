@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\PHPStan\Rule;
+namespace DrupheusCs\PHPStan\Rule;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Return_;
@@ -63,7 +63,7 @@ final class NullableReturnRule implements Rule {
     $nullable = str_contains($described, '|') ? $described . '|null' : '?' . $described;
     return [
       RuleErrorBuilder::message(sprintf('%s can return NULL, so its return type must be nullable: %s.', $name, $nullable))
-        ->identifier('drupalCs.types.nullable')
+        ->identifier('drupheusCs.types.nullable')
         ->build(),
     ];
   }

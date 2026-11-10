@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\PHPStan\Drupal;
+namespace DrupheusCs\PHPStan\Drupal;
 
 /**
  * Drupal versions that introduced the features the rules recommend.

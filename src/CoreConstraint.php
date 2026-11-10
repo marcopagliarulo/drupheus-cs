@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS;
+namespace DrupheusCs;
 
 /**
  * Reads the lowest Drupal version allowed by a core_version_requirement.

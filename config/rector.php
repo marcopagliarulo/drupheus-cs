@@ -8,7 +8,7 @@
 declare(strict_types=1);
 
 use Composer\InstalledVersions;
-use DrupalCS\CoreConstraint;
+use DrupheusCs\CoreConstraint;
 use DrupalFinder\DrupalFinderComposerRuntime;
 use DrupalRector\Services\DrupalRectorSettings;
 use DrupalRector\Set\Drupal10SetList;

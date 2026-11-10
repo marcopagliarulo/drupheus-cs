@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\Sniffs\Namespaces;
+namespace DrupheusCs\Sniffs\Namespaces;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;

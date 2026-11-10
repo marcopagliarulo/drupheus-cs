@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\PHPStan\Rule;
+namespace DrupheusCs\PHPStan\Rule;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\Variable;
@@ -68,7 +68,7 @@ final class VariableCaseRule implements Rule {
 
       $reported[$name] = TRUE;
       $errors[] = RuleErrorBuilder::message(sprintf('Variable $%s in %s must use %s: rename it to $%s.', $name, $label, $this->style, $this->convert($name)))
-        ->identifier('drupalCs.naming.variableCase')
+        ->identifier('drupheusCs.naming.variableCase')
         ->line($variable->getStartLine())
         ->build();
     }

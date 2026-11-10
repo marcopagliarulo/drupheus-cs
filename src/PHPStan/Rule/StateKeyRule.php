@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\PHPStan\Rule;
+namespace DrupheusCs\PHPStan\Rule;
 
-use DrupalCS\PHPStan\Drupal\ExtensionLocator;
+use DrupheusCs\PHPStan\Drupal\ExtensionLocator;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Identifier;
@@ -72,7 +72,7 @@ final class StateKeyRule implements Rule {
       $message = $this->check($key->getValue(), $prefixes);
       if ($message !== NULL) {
         $errors[] = RuleErrorBuilder::message($message)
-          ->identifier('drupalCs.naming.stateKey')
+          ->identifier('drupheusCs.naming.stateKey')
           ->build();
       }
     }

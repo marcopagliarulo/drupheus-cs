@@ -10,7 +10,7 @@ parameters:
 			reportUnmatched: false
 
 	# Every rule below is on by default. Uncomment one to turn it off.
-	# drupalCs:
+	# drupheusCs:
 	# 	minimumCoreVersion: '11.2'
 	# 	variableCase:
 	# 		style: snake_case

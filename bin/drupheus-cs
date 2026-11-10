@@ -5,11 +5,11 @@ declare(strict_types=1);
 
 /**
  * @file
- * Runs the Drupal CS tools with one command.
+ * Runs the Drupheus CS tools with one command.
  */
 
 use Composer\InstalledVersions;
-use DrupalCS\Cli\LanguageTools;
+use DrupheusCs\Cli\LanguageTools;
 
 $binDir = $GLOBALS['_composer_bin_dir'] ?? dirname(__DIR__, 3) . '/bin';
 $vendorDir = dirname($binDir);
@@ -37,7 +37,7 @@ function phpstan_config(): string {
       return $file;
     }
   }
-  fwrite(STDERR, "No PHPStan configuration found. Run `drupal-cs init` first.\n");
+  fwrite(STDERR, "No PHPStan configuration found. Run `drupheus-cs init` first.\n");
   exit(2);
 }
 
@@ -72,7 +72,7 @@ function project_paths(): array {
       return $paths === [] ? ['.'] : $paths;
     }
   }
-  fwrite(STDERR, "No PHPCS configuration found. Run `drupal-cs init` first.\n");
+  fwrite(STDERR, "No PHPCS configuration found. Run `drupheus-cs init` first.\n");
   exit(2);
 }
 
@@ -99,22 +99,22 @@ function run_language_tool(LanguageTools $tools, string $tool, bool $fix): int {
  * Lists which classes can use autowiring and why others cannot.
  */
 function autowire_report(string $binDir): int {
-  $config = tempnam(sys_get_temp_dir(), 'drupal-cs') . '.neon';
+  $config = tempnam(sys_get_temp_dir(), 'drupheus-cs') . '.neon';
   $include = getcwd() . '/' . phpstan_config();
-  file_put_contents($config, "includes:\n\t- {$include}\nparameters:\n\tdrupalCs:\n\t\tautowire:\n\t\t\treportUnavailable: true\n");
+  file_put_contents($config, "includes:\n\t- {$include}\nparameters:\n\tdrupheusCs:\n\t\tautowire:\n\t\t\treportUnavailable: true\n");
 
   $line = sprintf('%s analyse --no-progress --memory-limit=-1 --error-format=json --configuration=%s 2>/dev/null', escapeshellarg($binDir . '/phpstan'), escapeshellarg($config));
   $result = json_decode((string) shell_exec($line), TRUE);
   unlink($config);
   if (!is_array($result)) {
-    fwrite(STDERR, "PHPStan did not return a report. Run `drupal-cs check phpstan` to see why.\n");
+    fwrite(STDERR, "PHPStan did not return a report. Run `drupheus-cs check phpstan` to see why.\n");
     return 2;
   }
 
   $sections = [
-    'drupalCs.autowire.available' => 'Can be autowired',
-    'drupalCs.autowire.unresolvable' => 'Autowired, but will fail at runtime',
-    'drupalCs.autowire.unavailable' => 'Cannot be autowired',
+    'drupheusCs.autowire.available' => 'Can be autowired',
+    'drupheusCs.autowire.unresolvable' => 'Autowired, but will fail at runtime',
+    'drupheusCs.autowire.unavailable' => 'Cannot be autowired',
   ];
   $found = FALSE;
   foreach ($sections as $identifier => $title) {
@@ -180,7 +180,7 @@ switch ($command) {
 
   default:
     echo <<<'HELP'
-    Usage: drupal-cs <command>
+    Usage: drupheus-cs <command>
 
       init [path]             Create phpcs.xml.dist, phpstan.neon.dist and rector.php for a path
       check [tool...]         Run all checks, or only the named ones: phpcs,

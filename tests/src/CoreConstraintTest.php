@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\Tests;
+namespace DrupheusCs\Tests;
 
-use DrupalCS\CoreConstraint;
+use DrupheusCs\CoreConstraint;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

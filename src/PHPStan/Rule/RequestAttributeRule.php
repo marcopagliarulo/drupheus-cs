@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\PHPStan\Rule;
+namespace DrupheusCs\PHPStan\Rule;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
@@ -66,7 +66,7 @@ final class RequestAttributeRule implements Rule {
     foreach ($keys as $key) {
       if (!str_starts_with($key->getValue(), '_')) {
         $errors[] = RuleErrorBuilder::message(sprintf('Request attribute "%1$s" must start with "_", such as "_%1$s": only values from the path omit it.', $key->getValue()))
-          ->identifier('drupalCs.naming.requestAttribute')
+          ->identifier('drupheusCs.naming.requestAttribute')
           ->build();
       }
     }

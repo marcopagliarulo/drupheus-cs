@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\Sniffs\ControlStructures;
+namespace DrupheusCs\Sniffs\ControlStructures;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;

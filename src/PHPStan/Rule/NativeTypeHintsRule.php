@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\PHPStan\Rule;
+namespace DrupheusCs\PHPStan\Rule;
 
 use PhpParser\Node;
 use PhpParser\Node\ComplexType;
@@ -170,7 +170,7 @@ final class NativeTypeHintsRule implements Rule {
    * Builds a type hint error.
    */
   private function error(string $message, string $id, int $line): IdentifierRuleError {
-    return RuleErrorBuilder::message($message)->identifier('drupalCs.types.' . $id)->line($line)->build();
+    return RuleErrorBuilder::message($message)->identifier('drupheusCs.types.' . $id)->line($line)->build();
   }
 
 }

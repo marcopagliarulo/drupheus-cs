@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\PHPStan\Drupal;
+namespace DrupheusCs\PHPStan\Drupal;
 
-use DrupalCS\CoreConstraint;
+use DrupheusCs\CoreConstraint;
 
 /**
  * Determines the lowest Drupal version analyzed code has to run on.

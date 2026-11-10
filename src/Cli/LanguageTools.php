@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\Cli;
+namespace DrupheusCs\Cli;
 
 /**
  * Runs the Twig, JavaScript, CSS and spelling checks on a project.
@@ -69,7 +69,7 @@ final class LanguageTools {
    * Runs Twig-CS-Fixer with core's rules and the template docblock rule.
    */
   private function twig(string $path, bool $fix): int {
-    putenv('DRUPAL_CS_CORE_DIR=' . $this->coreDir);
+    putenv('DRUPHEUS_CS_CORE_DIR=' . $this->coreDir);
     return $this->execute($path, [
       $this->binDir . '/twig-cs-fixer',
       $fix ? 'fix' : 'lint',
@@ -287,7 +287,7 @@ final class LanguageTools {
    *   The content.
    */
   private function temporaryJson(array $data): string {
-    $base = (string) tempnam(sys_get_temp_dir(), 'drupal-cs');
+    $base = (string) tempnam(sys_get_temp_dir(), 'drupheus-cs');
     $file = $base . '.json';
     file_put_contents($file, json_encode($data, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES));
     array_push($this->temporaryFiles, $base, $file);

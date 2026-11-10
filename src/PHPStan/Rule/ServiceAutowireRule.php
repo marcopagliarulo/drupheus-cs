@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DrupalCS\PHPStan\Rule;
+namespace DrupheusCs\PHPStan\Rule;
 
-use DrupalCS\PHPStan\Drupal\ConstructorAutowireAnalyzer;
-use DrupalCS\PHPStan\Drupal\ExtensionLocator;
+use DrupheusCs\PHPStan\Drupal\ConstructorAutowireAnalyzer;
+use DrupheusCs\PHPStan\Drupal\ExtensionLocator;
 use PhpParser\Node;
 use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\Class_;
@@ -136,7 +136,7 @@ final class ServiceAutowireRule implements Rule {
 
     return array_map(
       static fn(string $problem): IdentifierRuleError => RuleErrorBuilder::message(sprintf("Service '%s' in %s.services.yml cannot be autowired: %s.", $id, $extension, $problem))
-        ->identifier('drupalCs.autowire.unresolvable')
+        ->identifier('drupheusCs.autowire.unresolvable')
         ->line($line)
         ->build(),
       $this->analyzer->problems($unset, TRUE),
@@ -183,7 +183,7 @@ final class ServiceAutowireRule implements Rule {
 
     return [
       RuleErrorBuilder::message($message . '.')
-        ->identifier('drupalCs.autowire.available')
+        ->identifier('drupheusCs.autowire.available')
         ->line($line)
         ->build(),
     ];
@@ -221,7 +221,7 @@ final class ServiceAutowireRule implements Rule {
     }
     return [
       RuleErrorBuilder::message(sprintf("Service '%s' in %s.services.yml cannot use autowiring: %s.", $id, $extension, $reason))
-        ->identifier('drupalCs.autowire.unavailable')
+        ->identifier('drupheusCs.autowire.unavailable')
         ->line($line)
         ->build(),
     ];

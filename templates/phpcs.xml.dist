@@ -10,7 +10,7 @@
   <!-- Report warnings without failing the run. -->
   <config name="ignore_warnings_on_exit" value="1"/>
 
-  <rule ref="DrupalCS">
+  <rule ref="DrupheusCs">
     <!-- Uncomment to stop requiring declare(strict_types=1). -->
     <!-- <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing"/> -->
   </rule>

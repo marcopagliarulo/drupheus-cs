@@ -1,5 +1,5 @@
 {
-    "name": "marcopagliarulo/drupal-cs",
+    "name": "drupheus/drupheus-cs",
     "description": "Drupal coding standards, deprecation checks and modernization rules for Drupal 11+ contrib development, built on PHP_CodeSniffer, PHPStan and Rector.",
     "type": "phpcodesniffer-standard",
     "license": "GPL-2.0-or-later",
@@ -27,15 +27,15 @@
     },
     "autoload": {
         "psr-4": {
-            "DrupalCS\\": "src/"
+            "DrupheusCs\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "DrupalCS\\Tests\\": "tests/src/"
+            "DrupheusCs\\Tests\\": "tests/src/"
         }
     },
-    "bin": ["bin/drupal-cs"],
+    "bin": ["bin/drupheus-cs"],
     "extra": {
         "phpstan": {
             "includes": ["config/extension.neon"]
