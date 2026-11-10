@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * @file
+ * Baseline rule fixtures.
+ */
+
+/**
+ * Returns a comparison.
+ */
+function dcs_standard_compare(int $first_value, int $second_value): int {
+  $otherValue = $first_value ? $first_value : $second_value;
+  $other_value = $otherValue;
+  if ($first_value <> $second_value) {
+    return $other_value;
+  }
+  return 0;
+}
+
+/**
+ * Has no types.
+ */
+function dcs_standard_untyped($value) {
+  return $value;
+}
+
+/**
+ * Returns nothing.
+ */
+function dcs_standard_nothing() {
+  $callback = fn() => 1;
+  $callback();
+}
+
+/**
+ * Returns null although the type is not nullable.
+ */
+function dcs_standard_nullable(int $value): string {
+  return $value > 0 ? 'yes' : NULL;
+}

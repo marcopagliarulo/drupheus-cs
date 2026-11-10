@@ -1,0 +1,4 @@
+name: DCS assets
+type: module
+description: Fixture for Twig, JavaScript, CSS and spelling checks.
+core_version_requirement: ^11.4

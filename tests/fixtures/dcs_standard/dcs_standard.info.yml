@@ -1,0 +1,4 @@
+name: DCS standard
+type: module
+description: Fixture for the baseline rules.
+core_version_requirement: ^11.4

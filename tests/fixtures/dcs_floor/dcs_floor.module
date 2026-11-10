@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Hook fixtures.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_cron().
+ */
+function dcs_floor_cron(): void {
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function dcs_floor_preprocess_node(array &$variables): void {
+}

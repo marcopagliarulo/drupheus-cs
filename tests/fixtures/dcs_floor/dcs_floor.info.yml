@@ -1,0 +1,4 @@
+name: DCS floor
+type: module
+description: Fixture for rules gated by an old minimum core.
+core_version_requirement: ^11.1

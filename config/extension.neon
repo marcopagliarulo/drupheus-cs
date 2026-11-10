@@ -1,0 +1,108 @@
+parameters:
+	drupalCs:
+		# Lowest Drupal version the code must run on, for example '11.2'. When
+		# NULL it is read from core_version_requirement in the nearest info.yml.
+		minimumCoreVersion: null
+		autowire:
+			# Also report classes that cannot use autowiring, and why. This is
+			# what `drupal-cs autowire` turns on.
+			reportUnavailable: false
+		variableCase:
+			# Either lowerCamelCase or snake_case.
+			style: lowerCamelCase
+		# Rules from the coding standards that Coder does not enforce.
+		standard:
+			nativeTypeHints: true
+			namingConventions: true
+		# Modernization rules beyond the coding standards.
+		extras:
+			variableCase: true
+			constructorPromotion: true
+			autowire: true
+			classHooks: true
+			pluginAttributes: true
+			typedProperties: true
+
+parametersSchema:
+	drupalCs: structure([
+		minimumCoreVersion: schema(string(), nullable())
+		autowire: structure([
+			reportUnavailable: bool()
+		])
+		variableCase: structure([
+			style: anyOf('lowerCamelCase', 'snake_case')
+		])
+		standard: structure([
+			nativeTypeHints: bool()
+			namingConventions: bool()
+		])
+		extras: structure([
+			variableCase: bool()
+			constructorPromotion: bool()
+			autowire: bool()
+			classHooks: bool()
+			pluginAttributes: bool()
+			typedProperties: bool()
+		])
+	])
+
+conditionalTags:
+	DrupalCS\PHPStan\Rule\VariableCaseRule:
+		phpstan.rules.rule: %drupalCs.extras.variableCase%
+	DrupalCS\PHPStan\Rule\ConstructorPromotionRule:
+		phpstan.rules.rule: %drupalCs.extras.constructorPromotion%
+	DrupalCS\PHPStan\Rule\NativeTypeHintsRule:
+		phpstan.rules.rule: %drupalCs.standard.nativeTypeHints%
+	DrupalCS\PHPStan\Rule\NullableReturnRule:
+		phpstan.rules.rule: %drupalCs.standard.nativeTypeHints%
+	DrupalCS\PHPStan\Rule\NamingConventionsRule:
+		phpstan.rules.rule: %drupalCs.standard.namingConventions%
+	DrupalCS\PHPStan\Rule\StateKeyRule:
+		phpstan.rules.rule: %drupalCs.standard.namingConventions%
+	DrupalCS\PHPStan\Rule\RequestAttributeRule:
+		phpstan.rules.rule: %drupalCs.standard.namingConventions%
+	DrupalCS\PHPStan\Rule\FilterPlaceholderRule:
+		phpstan.rules.rule: %drupalCs.standard.namingConventions%
+	DrupalCS\PHPStan\Rule\Psr4LocationRule:
+		phpstan.rules.rule: %drupalCs.standard.namingConventions%
+	DrupalCS\PHPStan\Rule\FactoryAutowireRule:
+		phpstan.rules.rule: %drupalCs.extras.autowire%
+	DrupalCS\PHPStan\Rule\ServiceAutowireRule:
+		phpstan.rules.rule: %drupalCs.extras.autowire%
+	DrupalCS\PHPStan\Rule\ProceduralHooksRule:
+		phpstan.rules.rule: %drupalCs.extras.classHooks%
+	DrupalCS\PHPStan\Rule\PluginAttributesRule:
+		phpstan.rules.rule: %drupalCs.extras.pluginAttributes%
+	DrupalCS\PHPStan\Rule\TypedPropertiesRule:
+		phpstan.rules.rule: %drupalCs.extras.typedProperties%
+
+services:
+	- DrupalCS\PHPStan\Drupal\ExtensionLocator
+	-
+		class: DrupalCS\PHPStan\Drupal\CoreVersion
+		arguments:
+			override: %drupalCs.minimumCoreVersion%
+	- DrupalCS\PHPStan\Drupal\ConstructorAutowireAnalyzer
+	-
+		class: DrupalCS\PHPStan\Rule\VariableCaseRule
+		arguments:
+			style: %drupalCs.variableCase.style%
+	- DrupalCS\PHPStan\Rule\ConstructorPromotionRule
+	- DrupalCS\PHPStan\Rule\NativeTypeHintsRule
+	- DrupalCS\PHPStan\Rule\NullableReturnRule
+	- DrupalCS\PHPStan\Rule\NamingConventionsRule
+	- DrupalCS\PHPStan\Rule\StateKeyRule
+	- DrupalCS\PHPStan\Rule\RequestAttributeRule
+	- DrupalCS\PHPStan\Rule\FilterPlaceholderRule
+	- DrupalCS\PHPStan\Rule\Psr4LocationRule
+	-
+		class: DrupalCS\PHPStan\Rule\FactoryAutowireRule
+		arguments:
+			reportUnavailable: %drupalCs.autowire.reportUnavailable%
+	-
+		class: DrupalCS\PHPStan\Rule\ServiceAutowireRule
+		arguments:
+			reportUnavailable: %drupalCs.autowire.reportUnavailable%
+	- DrupalCS\PHPStan\Rule\ProceduralHooksRule
+	- DrupalCS\PHPStan\Rule\PluginAttributesRule
+	- DrupalCS\PHPStan\Rule\TypedPropertiesRule

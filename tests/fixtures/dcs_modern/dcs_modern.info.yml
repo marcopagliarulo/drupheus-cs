@@ -1,0 +1,4 @@
+name: DCS modern
+type: module
+description: Fixture for rules on a recent core.
+core_version_requirement: ^11.4

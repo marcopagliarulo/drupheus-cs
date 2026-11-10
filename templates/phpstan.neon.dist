@@ -1,0 +1,26 @@
+parameters:
+	level: 6
+	paths:
+		- %PATH%
+	treatPhpDocTypesAsCertain: false
+	ignoreErrors:
+		# Drupal render arrays and hook signatures cannot be fully described.
+		-
+			identifier: missingType.iterableValue
+			reportUnmatched: false
+
+	# Every rule below is on by default. Uncomment one to turn it off.
+	# drupalCs:
+	# 	minimumCoreVersion: '11.2'
+	# 	variableCase:
+	# 		style: snake_case
+	# 	standard:
+	# 		nativeTypeHints: false
+	# 		namingConventions: false
+	# 	extras:
+	# 		variableCase: false
+	# 		constructorPromotion: false
+	# 		autowire: false
+	# 		classHooks: false
+	# 		pluginAttributes: false
+	# 		typedProperties: false

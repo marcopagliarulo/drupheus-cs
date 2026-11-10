@@ -1,0 +1,195 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @file
+ * Runs the Drupal CS tools with one command.
+ */
+
+use Composer\InstalledVersions;
+use DrupalCS\Cli\LanguageTools;
+
+$binDir = $GLOBALS['_composer_bin_dir'] ?? dirname(__DIR__, 3) . '/bin';
+$vendorDir = dirname($binDir);
+require $vendorDir . '/autoload.php';
+$packageDir = dirname(__DIR__);
+$arguments = array_slice($argv, 1);
+$command = array_shift($arguments) ?? 'help';
+
+/**
+ * Runs a tool from the Composer bin directory and returns its exit code.
+ */
+function run_tool(string $binDir, string $tool, array $arguments): int {
+  $line = escapeshellarg($binDir . '/' . $tool) . ' ' . implode(' ', array_map('escapeshellarg', $arguments));
+  echo PHP_EOL, "> {$tool} ", implode(' ', $arguments), PHP_EOL;
+  passthru($line, $code);
+  return $code;
+}
+
+/**
+ * Returns the PHPStan configuration file in the working directory.
+ */
+function phpstan_config(): string {
+  foreach (['phpstan.neon', 'phpstan.neon.dist', 'phpstan.dist.neon'] as $file) {
+    if (is_file($file)) {
+      return $file;
+    }
+  }
+  fwrite(STDERR, "No PHPStan configuration found. Run `drupal-cs init` first.\n");
+  exit(2);
+}
+
+/**
+ * Copies the configuration templates into the working directory.
+ */
+function init_project(string $packageDir, string $vendorDir, string $path): int {
+  $vendor = rtrim(str_replace(getcwd() . '/', '', $vendorDir), '/');
+  $path = str_replace(getcwd() . '/', '', $path);
+  foreach (['phpcs.xml.dist', 'phpstan.neon.dist', 'rector.php'] as $file) {
+    if (file_exists($file)) {
+      echo "Skipped {$file}: it already exists.", PHP_EOL;
+      continue;
+    }
+    $template = file_get_contents("{$packageDir}/templates/{$file}");
+    file_put_contents($file, strtr($template, ['%PATH%' => $path, '%VENDOR%' => $vendor]));
+    echo "Created {$file}.", PHP_EOL;
+  }
+  return 0;
+}
+
+/**
+ * Returns the paths listed in the project's PHPCS configuration.
+ *
+ * @return list<string>
+ *   The paths to check.
+ */
+function project_paths(): array {
+  foreach (['phpcs.xml', 'phpcs.xml.dist', '.phpcs.xml', '.phpcs.xml.dist'] as $file) {
+    if (is_file($file)) {
+      $paths = array_map('strval', iterator_to_array(simplexml_load_file($file)->file, FALSE));
+      return $paths === [] ? ['.'] : $paths;
+    }
+  }
+  fwrite(STDERR, "No PHPCS configuration found. Run `drupal-cs init` first.\n");
+  exit(2);
+}
+
+/**
+ * Creates the runner for the Twig, JavaScript, CSS and spelling tools.
+ */
+function language_tools(string $binDir, string $packageDir): LanguageTools {
+  $coreDir = InstalledVersions::isInstalled('drupal/core') ? realpath((string) InstalledVersions::getInstallPath('drupal/core')) : FALSE;
+  return new LanguageTools($binDir, $packageDir, $coreDir === FALSE ? NULL : $coreDir);
+}
+
+/**
+ * Runs a language tool on every project path and returns the worst exit code.
+ */
+function run_language_tool(LanguageTools $tools, string $tool, bool $fix): int {
+  $worst = 0;
+  foreach (project_paths() as $path) {
+    $worst = max($worst, $tools->run($tool, $path, $fix));
+  }
+  return $worst;
+}
+
+/**
+ * Lists which classes can use autowiring and why others cannot.
+ */
+function autowire_report(string $binDir): int {
+  $config = tempnam(sys_get_temp_dir(), 'drupal-cs') . '.neon';
+  $include = getcwd() . '/' . phpstan_config();
+  file_put_contents($config, "includes:\n\t- {$include}\nparameters:\n\tdrupalCs:\n\t\tautowire:\n\t\t\treportUnavailable: true\n");
+
+  $line = sprintf('%s analyse --no-progress --memory-limit=-1 --error-format=json --configuration=%s 2>/dev/null', escapeshellarg($binDir . '/phpstan'), escapeshellarg($config));
+  $result = json_decode((string) shell_exec($line), TRUE);
+  unlink($config);
+  if (!is_array($result)) {
+    fwrite(STDERR, "PHPStan did not return a report. Run `drupal-cs check phpstan` to see why.\n");
+    return 2;
+  }
+
+  $sections = [
+    'drupalCs.autowire.available' => 'Can be autowired',
+    'drupalCs.autowire.unresolvable' => 'Autowired, but will fail at runtime',
+    'drupalCs.autowire.unavailable' => 'Cannot be autowired',
+  ];
+  $found = FALSE;
+  foreach ($sections as $identifier => $title) {
+    $lines = [];
+    foreach ($result['files'] as $file => $data) {
+      foreach ($data['messages'] as $message) {
+        if (($message['identifier'] ?? '') === $identifier) {
+          $lines[] = sprintf('  %s:%d%s    %s', str_replace(getcwd() . '/', '', $file), $message['line'], PHP_EOL, $message['message']);
+        }
+      }
+    }
+    if ($lines !== []) {
+      $found = TRUE;
+      echo $title, ':', PHP_EOL, implode(PHP_EOL, $lines), PHP_EOL, PHP_EOL;
+    }
+  }
+  if (!$found) {
+    echo 'No classes with a factory or autowired constructor were found.', PHP_EOL;
+  }
+  return 0;
+}
+
+switch ($command) {
+  case 'init':
+    exit(init_project($packageDir, $vendorDir, $arguments[0] ?? '.'));
+
+  case 'check':
+    $tools = $arguments === [] ? ['phpcs', 'phpstan', 'rector', ...LanguageTools::TOOLS] : $arguments;
+    $languageTools = language_tools($binDir, $packageDir);
+    $failed = [];
+    foreach ($tools as $tool) {
+      $code = match (TRUE) {
+        $tool === 'phpcs' => run_tool($binDir, 'phpcs', []),
+        $tool === 'phpstan' => run_tool($binDir, 'phpstan', ['analyse', '--memory-limit=-1']),
+        $tool === 'rector' => run_tool($binDir, 'rector', ['process', '--dry-run']),
+        in_array($tool, LanguageTools::TOOLS, TRUE) => run_language_tool($languageTools, $tool, FALSE),
+        default => 2,
+      };
+      if ($code !== 0) {
+        $failed[] = $tool;
+      }
+    }
+    echo PHP_EOL, $failed === [] ? 'All checks passed.' : 'Failed: ' . implode(', ', $failed), PHP_EOL;
+    exit($failed === [] ? 0 : 1);
+
+  case 'fix':
+    run_tool($binDir, 'rector', ['process']);
+    run_tool($binDir, 'phpcbf', []);
+    $languageTools = language_tools($binDir, $packageDir);
+    foreach (['twig', 'eslint', 'stylelint'] as $tool) {
+      run_language_tool($languageTools, $tool, TRUE);
+    }
+    exit(0);
+
+  case 'convert-hooks':
+    exit(run_tool($binDir, 'rector', ['process', '--clear-cache', '--config=' . $vendorDir . '/palantirnet/drupal-rector/rector-hook-convert.php', ...$arguments]));
+
+  case 'promote':
+    exit(run_tool($binDir, 'rector', ['process', '--clear-cache', '--config=' . $packageDir . '/config/rector-promotion.php', ...$arguments]));
+
+  case 'autowire':
+    exit(autowire_report($binDir));
+
+  default:
+    echo <<<'HELP'
+    Usage: drupal-cs <command>
+
+      init [path]             Create phpcs.xml.dist, phpstan.neon.dist and rector.php for a path
+      check [tool...]         Run all checks, or only the named ones: phpcs,
+                              phpstan, rector, twig, eslint, stylelint, cspell
+      fix                     Apply Rector, phpcbf, Twig, ESLint and Stylelint fixes
+      convert-hooks <path>    Convert procedural hooks to class hooks
+      promote <path>          Convert constructor assignments to promoted properties
+      autowire                List what can be autowired and what cannot, with reasons
+
+    HELP;
+    exit($command === 'help' ? 0 : 2);
+}

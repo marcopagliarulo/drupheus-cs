@@ -1,0 +1,13 @@
+services:
+  dcs_modern.explicit:
+    class: Drupal\dcs_modern\Service\Explicit
+    arguments: ['@entity_type.manager', '@cache.default']
+  dcs_modern.tagged:
+    class: Drupal\dcs_modern\Service\Tagged
+    arguments: [!tagged_iterator cache.bin]
+  dcs_modern.broken:
+    class: Drupal\dcs_modern\Service\Broken
+    autowire: true
+  dcs_modern.fine:
+    class: Drupal\dcs_modern\Service\Fine
+    autowire: true

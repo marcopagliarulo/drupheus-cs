@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Install fixtures.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_install().
+ */
+function dcs_modern_install(): void {
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function dcs_modern_requirements(string $phase): array {
+  return [];
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function dcs_modern_update_11001(): void {
+}

@@ -1,0 +1,45 @@
+{
+  "language": "en-US",
+  "allowCompoundWords": false,
+  "minWordLength": 4,
+  "ignorePaths": [
+    "vendor",
+    "node_modules",
+    ".git",
+    "*.patch",
+    "*.svg",
+    "*_ignore_*",
+    "**/.*.json",
+    "package.json",
+    "yarn.lock",
+    "phpstan*",
+    ".*ignore"
+  ],
+  "words": [
+    "lando", "ddev", "endapply", "nightwatchjs", "testgroup", "testgroups",
+    "backlinks", "mdhash", "uploaders", "vocabs", "curlopt", "returntransfer",
+    "curle", "customrequest", "failonerror", "postfields", "followlocation",
+    "blocklisted", "flagwords", "mkdocs", "autorun", "runtests", "dcms",
+    "browsertest", "chromedriver", "dockerhub", "drupalorg", "drush",
+    "simpletest", "minwordlength", "iid", "xdg"
+  ],
+  "flagWords": [
+    "blacklist->blocklist, denylist",
+    "blacklists->blocklists, denylists",
+    "blacklist's->blocklist's, denylist's",
+    "blacklisted->blocklisted, denylisted",
+    "e-mail",
+    "grey",
+    "queuing",
+    "whitelist:allowlist",
+    "whitelists:allowlists",
+    "whitelist's:allowlist's",
+    "whitelisted:allowlisted"
+  ],
+  "overrides": [
+    {
+      "filename": "**/{*.engine,*.inc,*.install,*.module,*.profile,*.theme}",
+      "languageId": "php"
+    }
+  ]
+}

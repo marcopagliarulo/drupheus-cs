@@ -1,0 +1,3 @@
+dcs_standard.item.*:
+  type: config_object
+  label: Item

@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * @file
+ * Hook fixtures.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Hook\Attribute\LegacyHook;
+
+/**
+ * Implements hook_form_alter().
+ */
+function dcs_modern_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function dcs_modern_preprocess_node(array &$variables): void {
+}
+
+/**
+ * Implements hook_mail().
+ */
+#[LegacyHook]
+function dcs_modern_mail($key, &$message, $params): void {
+}
+
+/**
+ * Returns a label from a deprecated API.
+ */
+function dcs_modern_label(): string {
+  return (string) \Drupal::service('renderer')->renderPlain([]);
+}

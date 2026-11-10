@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="project">
+  <description>Coding standards for this project.</description>
+
+  <file>%PATH%</file>
+
+  <arg name="colors"/>
+  <arg value="sp"/>
+
+  <!-- Report warnings without failing the run. -->
+  <config name="ignore_warnings_on_exit" value="1"/>
+
+  <rule ref="DrupalCS">
+    <!-- Uncomment to stop requiring declare(strict_types=1). -->
+    <!-- <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing"/> -->
+  </rule>
+</ruleset>

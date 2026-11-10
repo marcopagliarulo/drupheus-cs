@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="DrupalCS" namespace="DrupalCS">
+  <description>Drupal coding standards for Drupal 11+ contrib development.</description>
+
+  <arg name="extensions" value="php,module,inc,install,test,profile,theme,info,txt,md,yml"/>
+
+  <exclude-pattern>*/vendor/*</exclude-pattern>
+  <exclude-pattern>*/node_modules/*</exclude-pattern>
+  <exclude-pattern>*/bower_components/*</exclude-pattern>
+
+  <!-- Baseline: everything Coder enforces. -->
+  <rule ref="Drupal"/>
+  <rule ref="DrupalPractice"/>
+
+  <!-- Baseline: rules from the coding standards Coder does not enforce. -->
+  <rule ref="DrupalCS.Operators.NotEqualOperator"/>
+  <rule ref="DrupalCS.NamingConventions.VariableCaseConsistency"/>
+  <rule ref="DrupalCS.ControlStructures.AlternativeSyntax"/>
+  <rule ref="DrupalCS.Commenting.ObjectType"/>
+  <rule ref="DrupalCS.Namespaces.UnnecessaryAlias"/>
+  <rule ref="DrupalCS.Files.ProjectFileNames"/>
+  <rule ref="DrupalCS.Config.ConfigSchema"/>
+  <rule ref="DrupalCS.Classes.ConstantModifierOrder"/>
+  <rule ref="Squiz.Strings.DoubleQuoteUsage">
+    <!-- Drupal allows "Foo $bar" for simple variables. -->
+    <exclude name="Squiz.Strings.DoubleQuoteUsage.ContainsVar"/>
+  </rule>
+  <rule ref="Squiz.Strings.DoubleQuoteUsage.NotRequired">
+    <!-- Single quotes are recommended, not required. -->
+    <type>warning</type>
+  </rule>
+  <rule ref="Generic.Files.OneObjectStructurePerFile"/>
+  <rule ref="SlevomatCodingStandard.ControlStructures.RequireShortTernaryOperator"/>
+  <rule ref="SlevomatCodingStandard.Classes.ForbiddenPublicProperty">
+    <!-- "Strongly discouraged", not forbidden. -->
+    <type>warning</type>
+    <properties>
+      <property name="checkPromoted" value="true"/>
+      <!-- Plugin attributes and value objects expose public readonly data. -->
+      <property name="allowReadonly" value="true"/>
+    </properties>
+  </rule>
+
+  <!--
+    Extra enabled by default. Disable it from a project's phpcs.xml.dist with
+    <exclude name="..."/> inside its <rule ref="DrupalCS"> element. Every other
+    extra is a PHPStan rule, toggled in phpstan.neon.dist.
+  -->
+
+  <!-- Extra: strictTypes. Coder only validates the format when it is present. -->
+  <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing">
+    <severity>5</severity>
+  </rule>
+</ruleset>
